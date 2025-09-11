@@ -139,3 +139,47 @@
                         (ok u1)
                         (ok u0))))
             (ok u0))))
+
+(define-constant err-staking-not-found (err u109))
+(define-constant err-already-staking (err u110))
+(define-constant err-insufficient-staked (err u111))
+
+(define-data-var staking-reward-rate uint u50)
+
+(define-map staking-info principal { amount: uint, staked-at: uint, rewards: uint })
+
+(define-public (stake-credits (amount uint))
+    (let ((sender tx-sender)
+          (balance (default-to u0 (map-get? user-balances sender)))
+          (existing-stake (map-get? staking-info sender)))
+        (asserts! (> amount u0) err-invalid-amount)
+        (asserts! (>= balance amount) err-insufficient-balance)
+        (asserts! (is-none existing-stake) err-already-staking)
+        (map-set user-balances sender (- balance amount))
+        (map-set staking-info sender { amount: amount, staked-at: burn-block-height, rewards: u0 })
+        (ok true)))
+
+(define-public (unstake-credits)
+    (let ((sender tx-sender)
+          (stake (unwrap! (map-get? staking-info sender) err-staking-not-found))
+          (balance (default-to u0 (map-get? user-balances sender)))
+          (rewards (get rewards stake))
+          (amount (get amount stake)))
+        (map-set user-balances sender (+ balance (+ amount rewards)))
+        (map-delete staking-info sender)
+        (ok true)))
+
+(define-public (claim-rewards)
+    (let ((sender tx-sender)
+          (stake (unwrap! (map-get? staking-info sender) err-staking-not-found))
+          (current-rewards (calculate-rewards (get amount stake) (get staked-at stake)))
+          (updated-stake (merge stake { rewards: current-rewards })))
+        (map-set staking-info sender updated-stake)
+        (ok current-rewards)))
+
+(define-private (calculate-rewards (amount uint) (staked-at uint))
+    (let ((periods (/ (- burn-block-height staked-at) u100)))
+        (* amount (* periods (var-get staking-reward-rate)))))
+
+(define-read-only (get-staking-info (user principal))
+    (ok (map-get? staking-info user)))
