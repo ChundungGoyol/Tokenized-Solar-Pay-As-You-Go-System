@@ -1,4 +1,4 @@
-# ☀️ Tokenized Solar Pay-As-You-Go System
+# Tokenized Solar Pay-As-You-Go System
 
 A decentralized platform enabling affordable solar energy access through tokenization and smart contracts.
 
@@ -91,3 +91,68 @@ Testing completed:
 - Basic functionality verification
 - Principal authorization checks
 
+
+## 🔧 New Features
+
+### Energy Loan System
+
+- Donate credits to the community loan pool
+- Borrow credits during shortfalls
+- Repay loans manually
+- Track loan status and pool balance
+
+## 📚 Usage
+
+### Donate to Pool
+
+```clarity
+(contract-call? .tokenized-solar-payg donate-to-pool u50)
+```
+
+### Borrow Loan
+
+```clarity
+(contract-call? .tokenized-solar-payg borrow-loan u20)
+```
+
+### Repay Loan
+
+```clarity
+(contract-call? .tokenized-solar-payg repay-loan u20)
+```
+
+### Check Loan Info
+
+```clarity
+(contract-call? .tokenized-solar-payg get-loan-info tx-sender)
+```
+
+### Get Pool Balance
+
+```clarity
+(contract-call? .tokenized-solar-payg get-loan-pool-balance)
+```
+
+Git commit message:
+```
+feat: introduce energy loan system for enhanced credit accessibility
+```
+
+PR Title:
+```
+🚀 Integrate Energy Loan Mechanism for Seamless Credit Access
+```
+
+PR Description:
+```
+This pull request revolutionizes the Tokenized Solar Pay-As-You-Go System by introducing a groundbreaking Energy Loan Mechanism. Users can now borrow energy credits from a community-funded pool during times of need, ensuring uninterrupted access to solar power. The system intelligently caps loans at 10% of the pool balance to maintain sustainability, while tracking borrowings and repayments with precision.
+
+Key innovations include:
+
+- 💰 Community Pool Donations: Users contribute credits to build a shared resource
+- 🔄 Smart Borrowing Logic: Automated validation prevents over-borrowing and ensures pool integrity
+- 📊 Transparent Repayment Tracking: Real-time monitoring of loan status and repayment progress
+- 🛡️ Robust Security: Comprehensive checks maintain system balance and prevent unauthorized access
+
+This enhancement transforms the platform into a more resilient and user-centric ecosystem, fostering community support and long-term energy independence. #SolarRevolution #DeFiInnovation #SustainableEnergy
+```
