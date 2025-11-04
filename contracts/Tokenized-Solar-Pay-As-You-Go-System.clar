@@ -8,11 +8,14 @@
 (define-constant err-loan-pool-insufficient (err u112))
 (define-constant err-no-active-loan (err u113))
 (define-constant err-loan-amount-excessive (err u114))
+(define-constant err-invalid-referrer (err u115))
+(define-constant err-referrer-already-set (err u116))
 
 (define-data-var energy-rate uint u1000)
 (define-data-var total-energy-credits uint u0)
 (define-data-var loan-pool uint u0)
 (define-data-var max-loan-percentage uint u10)
+(define-data-var referral-reward-rate uint u5)
 
 (define-map user-balances principal uint)
 (define-map energy-usage { user: principal, month: uint } uint)
@@ -22,6 +25,7 @@
 (define-map alert-settings principal { low-threshold: uint, critical-threshold: uint, enabled: bool })
 (define-map consumption-alerts principal { alert-type: uint, triggered-at: uint, consumption-amount: uint })
 (define-map user-loans principal { amount: uint, borrowed-at: uint, repaid: uint })
+(define-map referral-info principal { referrer: principal, referred-count: uint, total-rewards: uint })
 
 (define-non-fungible-token energy-access uint)
 
@@ -234,3 +238,36 @@
 
 (define-read-only (get-loan-pool-balance)
      (ok (var-get loan-pool)))
+
+(define-public (set-referrer (referrer principal))
+     (let ((sender tx-sender))
+         (asserts! (not (is-eq sender referrer)) err-invalid-referrer)
+         (asserts! (is-none (map-get? referral-info sender)) err-referrer-already-set)
+         (asserts! (is-some (map-get? user-balances referrer)) (err u117))
+         (map-set referral-info sender { referrer: referrer, referred-count: u0, total-rewards: u0 })
+         (ok true)))
+
+(define-public (purchase-credits-with-referral (amount uint))
+     (let ((sender tx-sender)
+           (current-balance (default-to u0 (map-get? user-balances sender)))
+           (referral-data (map-get? referral-info sender)))
+         (asserts! (> amount u0) err-invalid-amount)
+         (try! (stx-transfer? amount sender contract-owner))
+         (map-set user-balances
+             sender
+             (+ current-balance (* amount (var-get energy-rate))))
+         (var-set total-energy-credits (+ (var-get total-energy-credits) amount))
+         (if (is-some referral-data)
+             (let ((referrer (get referrer (unwrap-panic referral-data)))
+                   (reward (/ (* amount (var-get referral-reward-rate)) u100))
+                   (referrer-balance (default-to u0 (map-get? user-balances referrer)))
+                   (updated-referral (merge (unwrap-panic referral-data)
+                       { referred-count: (+ (get referred-count (unwrap-panic referral-data)) u1),
+                         total-rewards: (+ (get total-rewards (unwrap-panic referral-data)) reward) })))
+                 (map-set user-balances referrer (+ referrer-balance reward))
+                 (map-set referral-info sender updated-referral)
+                 (ok true))
+             (ok true))))
+
+(define-read-only (get-referral-info (user principal))
+     (ok (map-get? referral-info user)))

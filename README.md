@@ -155,4 +155,56 @@ Key innovations include:
 - 🛡️ Robust Security: Comprehensive checks maintain system balance and prevent unauthorized access
 
 This enhancement transforms the platform into a more resilient and user-centric ecosystem, fostering community support and long-term energy independence. #SolarRevolution #DeFiInnovation #SustainableEnergy
+
+## 🔧 New Features
+
+### Referral Reward System
+
+- Set a referrer to earn rewards on purchases
+- Earn percentage-based rewards on referred users' credit purchases
+- Track referral statistics and total rewards earned
+- Enhanced user acquisition through incentivized referrals
+
+## 📚 Usage
+
+### Set Referrer
+
+```clarity
+(contract-call? .tokenized-solar-payg set-referrer 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM)
+```
+
+### Purchase Credits with Referral Rewards
+
+```clarity
+(contract-call? .tokenized-solar-payg purchase-credits-with-referral u100)
+```
+
+### Check Referral Info
+
+```clarity
+(contract-call? .tokenized-solar-payg get-referral-info tx-sender)
+```
+
+Git commit message:
+```
+feat: launch referral reward system to boost user growth
+```
+
+PR Title:
+```
+🌟 Unleash Referral Rewards for Explosive User Expansion
+```
+
+PR Description:
+```
+Dive into the future of decentralized energy with our cutting-edge Referral Reward System! This innovative feature empowers users to invite friends and family, unlocking mutual benefits through smart contract automation. By setting referrers and earning rewards on every credit purchase, participants create a viral growth engine that accelerates platform adoption.
+
+Key breakthroughs include:
+
+- 🔗 Seamless Referrer Linking: One-click setup with robust validation to prevent self-referrals and ensure genuine connections
+- 💎 Automated Reward Distribution: Instant percentage-based payouts directly to referrer balances upon successful purchases
+- 📈 Comprehensive Tracking: Detailed metrics on referral counts and cumulative rewards for transparent performance monitoring
+- 🛡️ Ironclad Security: Multi-layered checks maintain system integrity and prevent fraudulent activities
+
+This transformative addition turns users into ambassadors, driving organic growth while rewarding community engagement. Experience the power of decentralized referrals that redefine user acquisition in the solar energy space. #ReferralRevolution #CommunityDriven #SolarEcosystem
 ```
