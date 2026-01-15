@@ -207,4 +207,64 @@ Key breakthroughs include:
 - 🛡️ Ironclad Security: Multi-layered checks maintain system integrity and prevent fraudulent activities
 
 This transformative addition turns users into ambassadors, driving organic growth while rewarding community engagement. Experience the power of decentralized referrals that redefine user acquisition in the solar energy space. #ReferralRevolution #CommunityDriven #SolarEcosystem
+
+## 🔧 New Features
+
+### Peer-to-Peer Energy Credit Marketplace
+
+- List excess energy credits for sale at custom prices
+- Browse and purchase credits from other users
+- Cancel listings to reclaim credits
+- Direct STX transfers for seamless transactions
+- Enhanced liquidity and credit monetization
+
+## 📚 Usage
+
+### List Credits for Sale
+
+```clarity
+(contract-call? .tokenized-solar-payg list-credits u50 u100)
+```
+
+### Buy Credits from Listing
+
+```clarity
+(contract-call? .tokenized-solar-payg buy-credits u0)
+```
+
+### Cancel Listing
+
+```clarity
+(contract-call? .tokenized-solar-payg cancel-listing u0)
+```
+
+### Check Listing Details
+
+```clarity
+(contract-call? .tokenized-solar-payg get-listing u0)
+```
+
+Git commit message:
+```
+feat: launch peer-to-peer energy credit marketplace for enhanced liquidity
+```
+
+PR Title:
+```
+🛒 Deploy P2P Energy Credit Marketplace for Dynamic Trading
+```
+
+PR Description:
+```
+Embark on a new era of energy trading with our innovative Peer-to-Peer Energy Credit Marketplace! This cutting-edge feature empowers users to list surplus credits for sale, enabling direct transactions that boost liquidity and provide flexible monetization options. By facilitating seamless STX-based exchanges, we're creating a vibrant ecosystem where energy credits flow freely between users.
+
+Key advancements include:
+
+- 📈 Dynamic Listing System: Users can set custom prices for their excess credits, creating personalized trading opportunities
+- 🔄 Instant Purchase Mechanism: One-click buying with automatic balance updates and secure STX transfers
+- 🛡️ Seller Controls: Full authority to cancel listings and reclaim credits at any time
+- 📊 Transparent Tracking: Comprehensive listing details for informed decision-making
+- 🌐 Decentralized Exchange: Peer-to-peer trading that eliminates intermediaries and maximizes user autonomy
+
+This marketplace transforms the platform into a thriving energy economy, where users can optimize their credit holdings and access resources on-demand. Join the revolution in decentralized energy trading! #P2PTrading #EnergyMarketplace #DeFiEvolution
 ```
